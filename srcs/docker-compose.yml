@@ -1,0 +1,55 @@
+version: "3.5"
+networks:
+    local:
+        name: inet
+services:
+    nginx:
+        depends_on:
+           - wordpress
+        image: nginx:1.0
+        networks:
+            - local
+        build: ./requirements/nginx
+        ports:
+            - 443:443
+        volumes:
+            - wordpress-data:/var/www/wordpress
+        restart: always
+    mariadb:
+        image: mariadb
+        build: ./requirements/mariadb
+        image: mariadb:1.0
+        env_file:
+           - ./requirements/mariadb/conf/.env
+        ports:
+            - 3306:3306
+        volumes:
+            - mariadb-data:/var/lib/mysql
+        networks:
+            - local
+        restart: always
+    wordpress:
+        image: wordpriess:1.0
+        networks:
+            - local
+        env_file:
+            - ./requirements/wordpress/conf/.env
+        build: ./requirements/wordpress
+        ports:
+            - 9000:9000
+        volumes:
+            - wordpress-data:/var/www/wordpress
+        restart: always
+volumes:
+    wordpress-data:
+        driver_opts:
+            o: bind
+            device: "/home/elaronda/data/wordpress-data"
+            type: none
+        driver: local
+    mariadb-data:
+        driver_opts:
+            o: bind
+            device: "/home/elaronda/data/mariadb-data"
+            type: none
+        driver: local
