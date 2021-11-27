@@ -9,7 +9,7 @@ This project should be done on a VM. I used a debian 11
 ## Installation ⚙️
 1. Clone the repo
 ```
-git clone https://github.com/divinepet/irc_server
+git clone https://github.com/divinepet/Inception
 ```
 2. Compile the project
 ```
